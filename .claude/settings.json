@@ -1,0 +1,37 @@
+{
+	"$schema": "https://json.schemastore.org/claude-code-settings.json",
+	"includeGitInstructions": false,
+	"autoMemoryEnabled": true,
+	"autoMemoryDirectory": ".claude/memory",
+	"plansDirectory": ".claude/plans",
+	"showThinkingSummaries": true,
+	"permissions": {
+		"additionalDirectories": [
+			"~/go/pkg/mod"
+		],
+		"allow": [
+			"Bash(go generate *)",
+			"Bash(go run */cmd/ottrec-website-check *)",
+			"Bash(go vet *)",
+			"Bash(go test *)",
+			"Bash(npx tsc *)",
+			"Bash(tar -xOf static/*.tar *)",
+			"Bash(gofmt *)",
+			"Bash(curl -s \"https://raw.githubusercontent.com/google/material-design-icons/master/variablefont/MaterialSymbolsOutlined%5BFILL%2CGRAD%2Copsz%2Cwght%5D.codepoints\")",
+			"Bash(find ~/go/pkg/mod/* *)",
+			"Bash(go run github.com/bufbuild/buf/cmd/buf@* *)"
+		],
+		"ask": [
+			"Bash(go mod *)"
+		],
+		"deny": [
+			"Bash(git add:*)",
+			"Bash(git commit:*)",
+			"Bash(git stash:*)",
+			"Bash(git fetch:*)",
+			"Bash(git pull:*)",
+			"Bash(git push:*)"
+		],
+		"defaultMode": "default"
+	}
+}

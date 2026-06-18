@@ -1,6 +1,9 @@
 /*
 !/.gitignore
 !/.vscode
+!/.claude
+/.claude/*
+!/.claude/settings.json
 !/CLAUDE.md
 !/CONTRIBUTING.md
 !/profile
