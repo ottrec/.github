@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "golang.go",
+        "a-h.templ",
+        "pbkit.vscode-pbkit",
+        "dnut.rewrap-revived",
+        "opentofu.vscode-opentofu",
+    ],
+}

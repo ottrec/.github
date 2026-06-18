@@ -1,0 +1,51 @@
+{
+    "editor.tabSize": 4,
+    "editor.insertSpaces": false,
+    "[go]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        },
+        "editor.rulers": [
+            80
+        ],
+        "editor.formatOnSave": true,
+    },
+    "[css]": {
+        "editor.insertSpaces": true,
+    },
+    "[typescript]": {
+        "editor.insertSpaces": true,
+    },
+    "[templ]": {
+        "editor.defaultFormatter": "a-h.templ",
+        "editor.formatOnSave": true,
+        "editor.wordWrap": "on",
+        "editor.quickSuggestions": {
+            "other": "off",
+            "comments": "off",
+            "strings": "off",
+        },
+    },
+    "[markdown]": {
+        "editor.wordWrap": "on",
+        "editor.quickSuggestions": {
+            "other": "off",
+            "comments": "off",
+            "strings": "off",
+        },
+        "editor.insertSpaces": true,
+    },
+    "[opentofu]": {
+        "editor.formatOnSave": true,
+    },
+    "[yaml]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.autoIndent": "advanced",
+    },
+    "task.autoDetect": "off",
+    "task.quickOpen.showAll": true,
+    "git.detectWorktrees": true,
+    "git.autoRepositoryDetection": "subFolders",
+    "git.repositoryScanMaxDepth": 1,
+}

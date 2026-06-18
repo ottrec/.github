@@ -1,0 +1,235 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "data: pull and reset latest cache/data",
+            "linux": {
+                "command": "git -C data fetch origin && git -C cache reset --hard @{u} && git -C data reset --hard @{u} && git -C cache clean -fdx && git -C data clean -fdx"
+            },
+            "type": "shell",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "silent",
+                "echo": true,
+                "clear": true,
+                "panel": "shared",
+            },
+            "group": "none"
+        },
+        {
+            "label": "scraper: test scraper on local data using cached pages",
+            "command": "go run ./scraper/scraper -cache cache -geocodio -scrape -export.pretty -export.proto data/data.proto -export.pb data/data.pb -export.textpb data/data.textpb -export.json data/data.json",
+            "type": "shell",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "echo": true,
+                "clear": true,
+                "panel": "dedicated",
+            },
+            "group": "none"
+        },
+        {
+            "label": "scraper: lint schema",
+            "command": "go run github.com/bufbuild/buf/cmd/buf@v1.66.1 lint scraper/schema/schema.proto",
+            "type": "shell",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "echo": true,
+                "clear": true,
+                "panel": "shared",
+                "group": "scraper-schema",
+            },
+            "group": "none"
+        },
+        {
+            "label": "scraper: check for breaking schema schanges",
+            "command": "go",
+            "type": "shell",
+            "args": [
+                {
+                    "value": "run",
+                    "quoting": "escape"
+                },
+                {
+                    "value": "github.com/bufbuild/buf/cmd/buf@v1.66.1",
+                    "quoting": "escape"
+                },
+                {
+                    "value": "breaking",
+                    "quoting": "escape"
+                },
+                {
+                    "value": "--config",
+                    "quoting": "escape"
+                },
+                {
+                    // this is necessary since the proto files have different names
+                    "value": "{\"version\":\"v2\",\"breaking\":{\"use\":[\"WIRE_JSON\"]}}",
+                    "quoting": "strong",
+                },
+                {
+                    "value": "--against",
+                    "quoting": "escape"
+                },
+                {
+                    "value": "data/data.proto#include_package_files=false",
+                    "quoting": "strong"
+                },
+                {
+                    "value": "scraper/schema/schema.proto#include_package_files=false",
+                    "quoting": "strong"
+                },
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "silent",
+                "echo": true,
+                "clear": true,
+                "panel": "shared",
+                "group": "scraper-schema",
+            },
+            "group": "none"
+        },
+        {
+            "label": "scraper: generate schema",
+            "command": "go -C scraper generate ./schema",
+            "type": "shell",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "silent",
+                "echo": false,
+                "clear": true,
+                "panel": "shared",
+                "group": "scraper-schema",
+            },
+            "group": "none"
+        },
+        {
+            "label": "website: format and generate templates",
+            "command": "go -C website generate ./templates",
+            "type": "shell",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "silent",
+                "echo": false,
+                "clear": true,
+                "panel": "shared",
+                "group": "website-generate",
+            },
+            "group": "none"
+        },
+        {
+            "label": "website: update vendored fonts and libs",
+            "command": "go -C website generate ./static",
+            "type": "shell",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "silent",
+                "echo": false,
+                "clear": true,
+                "panel": "shared",
+                "group": "website-generate",
+            },
+            "group": "none"
+        },
+        {
+            "label": "website: check css/typescript compilation",
+            "command": "go -C website run ./cmd/ottrec-website-check",
+            "type": "shell",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "silent",
+                "echo": false,
+                "clear": true,
+                "panel": "shared",
+                "group": "website-test",
+            },
+            "group": "none"
+        },
+        {
+            "label": "website: check typescript",
+            "command": "npm exec tsc",
+            "options": {
+                "cwd": "website"
+            },
+            "type": "shell",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "silent",
+                "echo": false,
+                "clear": true,
+                "panel": "shared",
+                "group": "website-test",
+            },
+            "group": "none"
+        },
+        {
+            "label": "website: sanity check ottrecidx against data.ottrec.ca dev server",
+            "command": "go -C website run ./pkg/ottrecidx/profile.go -check -base http://localhost:8082/",
+            "type": "shell",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "echo": false,
+                "clear": true,
+                "panel": "shared",
+                "group": "website-test",
+            },
+            "group": "none"
+        },
+        {
+            "label": "infra: deploy",
+            "command": "ansible-playbook -i inventory.yml playbook.yml",
+            "options": {
+                "cwd": "infra/ansible"
+            },
+            "type": "shell",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "echo": false,
+                "clear": true,
+                "panel": "shared",
+                "group": "infra-ansible",
+            },
+            "group": "none"
+        },
+        {
+            "label": "infra: deploy ottrec",
+            "command": "ansible-playbook -i inventory.yml playbook.yml -t ottrec",
+            "options": {
+                "cwd": "infra/ansible"
+            },
+            "type": "shell",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "echo": false,
+                "clear": true,
+                "panel": "shared",
+                "group": "infra-ansible",
+            },
+            "group": "none"
+        },
+        {
+            "label": "infra: apply terraform",
+            "command": "tofu apply",
+            "options": {
+                "cwd": "infra/terraform"
+            },
+            "type": "shell",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "echo": false,
+                "clear": true,
+                "focus": true,
+                "panel": "shared",
+                "group": "infra-terraform",
+            },
+            "group": "none"
+        },
+    ]
+}
