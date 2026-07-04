@@ -155,7 +155,7 @@ CSS should be written for compatibility, but you can safely use most modern feat
 
 Scripts should be written in TypeScript. Prefer to write modern JS instead of importing libraries. All pages should also fall back gracefully without scripting. If you must import a dependency, choose a well-designed modern one without a crazy tree of dependencies.
 
-Fonts are subsetted from Google Fonts and committed. See fonts.go.
+Fonts are vendored into the repo and subsetted at runtime. See static.go.
 
 You may wonder why I don't use a "proper" frontend framework or at least a separate build step, and it's because:
 

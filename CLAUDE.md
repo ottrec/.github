@@ -129,9 +129,8 @@ are content-addressed (hashed names) and compiled **lazily at runtime**, so
   `go generate ./static` (`internal/npm`); tracked in `package.json`. Type
   checking needs `npm install` first (`node_modules` is gitignored).
 - **Fonts** (Source Sans 3 / Source Serif 4 / Asap / Material Symbols) are
-  subset by explicit codepoint in `static/fonts.go`; `go generate ./static`
-  refetches. Material Symbols render via CSS `::before` content escapes
-  (ligature names don't work in the subset).
+  subset by explicit codepoint in `static/static.go`. Material Symbols render
+  via CSS `::before` content escapes (ligature names don't work in the subset).
 - **Theming** is a flexoki light/dark palette driven entirely by
   `color-scheme` + `light-dark()` CSS vars, with an anti-FOUC inline script.
 
