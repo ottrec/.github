@@ -6,11 +6,19 @@
 
 #### Dependencies
 
+##### All
+
 - Git
 - Go
 - NPM
+
+##### Infra
+
 - OpenTofu
 - Ansible
+- Bun
+- Rust
+- cargo-zigbuild
 
 #### Workspace
 
@@ -119,6 +127,8 @@ go tool pprof -http :6061 /tmp/mem.pprof
 ```
 
 ### Infra
+
+Binaries are built locally as static executables. Everything is pinned except ottrec, which always builds the local clone or the latest commit.
 
 ```bash
 # deploy
