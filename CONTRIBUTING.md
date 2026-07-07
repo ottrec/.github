@@ -27,13 +27,14 @@
 git clone https://github.com/ottrec/.github ottrec
 git clone https://github.com/ottrec/scraper ottrec/scraper
 git clone https://github.com/ottrec/website ottrec/website
+git clone https://github.com/ottrec/data-enrichment ottrec/data-enrichment
 git clone https://github.com/ottrec/data ottrec/data --filter=blob:none
 git clone https://github.com/ottrec/misc ottrec/misc
 git clone https://github.com/ottrec/infra ottrec/infra # private
 git -C ottrec/data worktree add ../cache cache
 
 # set up go workspace
-go work init -C ottrec scraper website misc
+go work init -C ottrec scraper website data-enrichment misc
 
 # set up tofu
 env -C ottrec/infra/terraform tofu init
@@ -126,6 +127,19 @@ go tool pprof -http :6060 /tmp/cpu.pprof
 go tool pprof -http :6061 /tmp/mem.pprof
 ```
 
+### Data enrichment
+
+```bash
+# find all unparsed text
+go run ./data-enrichment/cmd/dump-residue
+
+# output a detailed report about parsed stuff for a single version
+go run ./data-enrichment/cmd/report
+
+# run unit tests
+go test -v ./data-enrichment/...
+```
+
 ### Infra
 
 Binaries are built locally as static executables. Everything is pinned except ottrec, which always builds the local clone or the latest commit.
@@ -142,6 +156,12 @@ env -C infra/terraform tofu apply
 ```
 
 ## Guidelines
+
+### Scraper
+
+Do not use LLMs to work on this (or any part of the scraping/indexing/parsing/simplified dataset process), as the logic is carefully designed to parse things reliably.
+
+Always preserve compatibility with old pages. Run the scraper against old cache commits if additional testing is required.
 
 ### Scraper schema updates
 
@@ -193,3 +213,15 @@ When doing URL parameters, handle them such that errors are obvious, yet still h
 All pages should have sensible caching, making use of ETags where possible.
 
 Pages should also have canonical URLs set, pointing at the main page of that category to avoid being penalized by Google for the many generated pages.
+
+### Data enrichment
+
+This one is almost all written by Claude, but manually verified.
+
+You should run ottrec-data to populate the cache first.
+
+The report and residue commands should be run and verified periodically to find any new things which need to be handled since we're ultimately parsing freeform human-written text.
+
+The parsed data for all available datasets should be diffed and inspected whenever this code is changed.
+
+When making changes to this, don't forget to update the commit referenced by ottrec-website before committing changes there.
