@@ -37,3 +37,13 @@
 </table>
 
 See <a href="https://data.ottrec.ca">data.ottrec.ca</a> for more information.
+
+#### LLM Usage
+
+The scraper and schema are entirely hand-written and verified. The dataset indexing, heuristics, and query language for the website are as well.
+
+I read the diff of all dataset updates. I also have claude read them as well to catch the less-obvious things (using some tooling I gave it ideas for). I report typos and incorrect schedules to the city daily when I notice them (usually ~5 per week).
+
+The website is designed by me at a high-level (features, layout, and architecture), but I delegate most of the implementation to Claude since I don't really enjoy front-end development. All long-form prose (and most of the shorter stuff) is written by me.
+
+The data enrichment is fully maintained by Claude, but I review the code and make the decisions about how to interpret stuff.
